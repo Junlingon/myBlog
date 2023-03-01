@@ -1,7 +1,8 @@
 import type { NextPage } from 'next'
+import { useState } from 'react'
 import Head from 'next/head'
 
-import { PostCard, PersonalWidget, PostWidget, Categories } from '../components'
+import { PostCard, PersonalWidget, PostWidget, Categories, Pagination } from '../components'
 
 const posts = [
   { title: "React Testing", excerpt: 'Learn React Testing' },
@@ -9,6 +10,18 @@ const posts = [
 ]
 
 const Home: NextPage = () => {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  // const firstPageIndex = (currentPage - 1) * pageSize
+  // const lastPageIndex = firstPageIndex + pageSize
+  // const pageCount = Math.ceil(postsData.length / pageSize)
+  // const pagination = {
+  //   pageCount,
+  //   currentPage
+  // }
+
+  // const currentData = postsData.slice(firstPageIndex, lastPageIndex)
+
   return (
     <div className="container mx-auto px-10 mb-8">
       <Head>
@@ -21,6 +34,7 @@ const Home: NextPage = () => {
           {posts.map((post) => {
             return <PostCard post={post} key={post.title}></PostCard>
           })}
+          {2 > 1 && <Pagination pagination={{ currentPage: currentPage, pageCount: 2 }} onPageChange={(page: number) => setCurrentPage(page)} />}
         </div>
         <div className="lg:col-span-4 col-span-1">
           <div className="lg:sticky relative top-8">
