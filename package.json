@@ -13,6 +13,7 @@
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-markdown": "^8.0.5",
     "react-multi-carousel": "^2.8.2",
     "sass": "^1.58.3"
   },
