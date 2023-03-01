@@ -9,7 +9,7 @@ interface Props {
     }
 }
 
-const host = process.env.CMS_ENDPOINT
+// const host = process.env.CMS_ENDPOINT
 
 const PostCard = ({ post }: Props) => {
     return (
