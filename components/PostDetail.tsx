@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import moment from 'moment'
+import rehypeRaw from 'rehype-raw'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 interface Props {
@@ -45,7 +46,7 @@ const PostDetail = ({ post }: Props) => {
                 <span className="align-middle">{moment(post.createdAt).format('MMM DD, YYYY')}</span>
             </div>
             <div className="p-3">
-                <ReactMarkdown linkTarget="_blank" components={CodeBlock} remarkPlugins={[]}>
+                <ReactMarkdown linkTarget="_blank" components={CodeBlock} remarkPlugins={[]} rehypePlugins={[rehypeRaw]}>
                     '**With** featured and recent posts, categories.
                     full markdown articles, author information, comments, and much more, this fully
                     responsiveAnd and your clients can manage the blog from a dedicated
