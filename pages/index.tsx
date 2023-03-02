@@ -2,10 +2,12 @@ import type { NextPage } from 'next'
 import { useState } from 'react'
 import { PostCard, PersonalWidget, PostWidget, Categories, Pagination } from '../components'
 
+// const random = ['document', 'book', 'girl', 'art', 'nature']
 const posts = [
-  { title: "React Testing", excerpt: 'Learn React Testing', id: 1 },
-  { title: "React with Tailwind", excerpt: 'Learn React', id: 2 },
+  { title: "React Testing", excerpt: 'Learn React Testing', id: 1, random: 'nature' },
+  { title: "React with Tailwind", excerpt: 'Learn React', id: 2, random: 'art' },
 ]
+
 
 const Home: NextPage = () => {
   const [currentPage, setCurrentPage] = useState(1)
