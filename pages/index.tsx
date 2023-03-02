@@ -3,8 +3,8 @@ import { useState } from 'react'
 import { PostCard, PersonalWidget, PostWidget, Categories, Pagination } from '../components'
 
 const posts = [
-  { title: "React Testing", excerpt: 'Learn React Testing' },
-  { title: "React with Tailwind", excerpt: 'Learn React' },
+  { title: "React Testing", excerpt: 'Learn React Testing', id: 1 },
+  { title: "React with Tailwind", excerpt: 'Learn React', id: 2 },
 ]
 
 const Home: NextPage = () => {
@@ -32,7 +32,7 @@ const Home: NextPage = () => {
         <div className="lg:col-span-4 col-span-1">
           <div className="lg:sticky relative top-8">
             <PersonalWidget />
-            <PostWidget />
+            <PostWidget posts={posts} />
             <Categories />
           </div>
         </div>
