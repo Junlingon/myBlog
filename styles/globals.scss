@@ -74,6 +74,20 @@ a {
   text-decoration: none;
 }
 
+blockquote {
+  border-left: 0.3rem solid;
+  padding-left: 0.6rem;
+}
+
+p code {
+  background-color: rgb(237, 237, 235);
+  padding: 0 0.2rem;
+  margin: 0 0.2rem;
+  font-weight: 500;
+  color: rgb(235, 105, 105);
+  border-radius: 0.2rem;
+}
+
 * {
   box-sizing: border-box;
 }
