@@ -1,12 +1,33 @@
 import React from 'react'
 import ReactMarkdown from 'react-markdown'
 import moment from 'moment'
-
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 interface Props {
     post: {
         [key: string]: any
     }
 }
+
+const CodeBlock = {
+    code({ node, inline, className, children, ...props }: any) {
+        const match = /language-(\w+)/.exec(className || '');
+        return !inline && match ? (
+            <SyntaxHighlighter
+                style={vscDarkPlus}
+                language={match[1]}
+                PreTag="div"
+                {...props}
+            >
+                {String(children).replace(/\n$/, '')}
+            </SyntaxHighlighter>
+        ) : (
+            <code className={className} {...props}>
+                {children}
+            </code>
+        );
+    },
+};
 
 const PostDetail = ({ post }: Props) => {
 
@@ -23,12 +44,14 @@ const PostDetail = ({ post }: Props) => {
                 <span className="align-middle">{moment(post.createdAt).format('MMM DD, YYYY')}</span>
             </div>
             <div className="p-3">
-                <ReactMarkdown children='**With** featured and recent posts, categories.
-             full markdown articles, author information, comments, and much more, this fully
-             responsiveAnd and your clients can manage the blog from a dedicated 
-             Content Management System. Built with the newest technologies such as React JS, #NextJS,
-             Tailwind CSS, #GraphQL, and StrapiCMS. 
-             ![Linear.png](http://localhost:1337/uploads/Linear_858c882351.png)'></ReactMarkdown>
+                <ReactMarkdown linkTarget="_blank" components={CodeBlock} remarkPlugins={[]}>
+                    '**With** featured and recent posts, categories.
+                    full markdown articles, author information, comments, and much more, this fully
+                    responsiveAnd and your clients can manage the blog from a dedicated
+                    Content Management System. Built with the newest technologies such as React JS, #NextJS,
+                    Tailwind CSS, #GraphQL, and StrapiCMS.
+                    ![Linear.png](http://localhost:1337/uploads/Linear_858c882351.png)'
+                </ReactMarkdown>
             </div>
 
         </div>
