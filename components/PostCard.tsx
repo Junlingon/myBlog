@@ -15,18 +15,18 @@ const PostCard = ({ post }: Props) => {
     return (
         <div className='bg-white shadow-lg rounded-lg p-0 lg:p-8 pb-12 mb-8'>
             <div className="relative overflow-hidden shadow-md pb-80 mb- 6">
-                <img src=''
+                <img src='https://source.unsplash.com/random'
                     alt='图片错误'
                     className="object-top absolute h-80 w-full object-cover shadow-lg rounded-t-lg lg:rounded-lg" />
             </div>
             <h1 className='transition duration-700 text-center mb-8 mt-3 hover:-translate-y-1 cursor-pointer hover:text-blue-600 text-3xl font-semibold'>
-                <Link href={`/post/1`}>第一篇文章</Link>
+                <Link href={`/post/1`}>{post.title}</Link>
             </h1>
             <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
                 <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
-                    <img src='4564' alt='4564'
+                    <img src='http://localhost:3000/avatar.jpg' alt=''
                         className="align-middle rounded-full h-8 w-8" />
-                    <p className='inline align-middle text-gray-700 ml-2 text-lg'>post.author.data.attributes.name</p>
+                    <p className='inline align-middle text-gray-700 ml-2 text-lg'>JunlinGong</p>
                 </div>
                 <div className="font-medium text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline mr-2 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -36,7 +36,7 @@ const PostCard = ({ post }: Props) => {
                 </div>
             </div>
             <p className='text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-2'>
-                post.Excerpt
+                {post.excerpt}
             </p>
         </div>
 
