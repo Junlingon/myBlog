@@ -15,6 +15,7 @@ const CodeBlock = {
         return !inline && match ? (
             <SyntaxHighlighter
                 style={vscDarkPlus}
+                customStyle={{ "border-radius": "0.5rem" }}
                 language={match[1]}
                 PreTag="div"
                 {...props}
