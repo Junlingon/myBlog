@@ -26,7 +26,6 @@ const pageSize = 3
 
 const Home: NextPage<Props> = ({ markdownFilesList, b }) => {
 
-  console.log(b)
   const [currentPage, setCurrentPage] = useState(1)
   const firstPageIndex = (currentPage - 1) * pageSize
   const lastPageIndex = firstPageIndex + pageSize
@@ -71,7 +70,7 @@ export const getStaticProps: GetStaticProps = async () => {
   const b = a.map((item) => {
     return { ...item, ...{ date: ymd(item.date) } }
   })
-  console.log(b)
+
   return {
     props: {
       markdownFilesList,
