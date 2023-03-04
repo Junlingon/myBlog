@@ -4,6 +4,7 @@ import fm from "front-matter";
 import { remark } from "remark";
 import remarkhtml from "remark-html";
 import * as dateformat from "./dateformat";
+import { parseISO } from "date-fns";
 
 const fileExt = "md";
 
@@ -24,6 +25,31 @@ export async function getFileIds(dir = "./") {
     return files
         .filter((fn) => path.extname(fn) === `.${fileExt}`)
         .map((fn) => path.basename(fn, path.extname(fn)));
+}
+
+
+// 获取所有文章用于展示首页列表的数据
+export async function getSortedPostsData(dir = "./") {
+    const loc = absPath(dir);
+    const files = await fsp.readdir(loc);
+    // // 获取所有md文件用于展示首页列表的数据，包含id，元数据（标题，时间）
+    const asyncPostsData = files.map(
+        async (file) => {
+            const data = await fsp.readFile(path.join(loc, file), "utf8");
+            const matter = fm(data);
+            const slug = file.replace(/\.md$/, "")
+            return {
+                slug,
+                ...matter.attributes,
+            };
+        }
+    );
+    return Promise.all(asyncPostsData).then(results => {
+        return results.sort(({ date: a }, { date: b }) =>
+            // parseISO：字符串转日期
+            parseISO(a) < parseISO(b) ? 1 : -1
+        );
+    });
 }
 
 /**
