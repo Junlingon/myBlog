@@ -37,7 +37,7 @@ const Home: NextPage<Props> = ({ markdownFilesList, random }) => {
         <div className="lg:col-span-4 col-span-1">
           <div className="lg:sticky relative top-8">
             <PersonalWidget />
-            <PostWidget posts={posts} />
+            <PostWidget posts={markdownFilesList} />
             <Categories />
           </div>
         </div>
