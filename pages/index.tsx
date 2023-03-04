@@ -1,7 +1,7 @@
 import type { NextPage, GetStaticProps } from 'next'
 import { useState } from 'react'
 import { PostCard, PersonalWidget, PostWidget, Categories, Pagination } from '../components'
-import { getFileIds, getFileData } from '../utils/posts-md'
+import { getFileIds } from '../utils/posts-md'
 // const random = ['document', 'book', 'girl', 'art', 'nature']
 const posts = [
   { title: "React Testing", excerpt: 'Learn React Testing', id: 1, random: 'nature' },
@@ -9,10 +9,11 @@ const posts = [
 ]
 
 interface Props {
-  markdownFilesList: any
+  markdownFilesList: string[],
+  random: string[],
 }
 
-const Home: NextPage<Props> = ({ markdownFilesList }) => {
+const Home: NextPage<Props> = ({ markdownFilesList, random }) => {
   const [currentPage, setCurrentPage] = useState(1)
   // const firstPageIndex = (currentPage - 1) * pageSize
   // const lastPageIndex = firstPageIndex + pageSize
@@ -29,7 +30,7 @@ const Home: NextPage<Props> = ({ markdownFilesList }) => {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
         <div className="lg:col-span-8 col-span-1">
           {markdownFilesList.map((post: any, index: number) => {
-            return <PostCard post={post} key={index}></PostCard>
+            return <PostCard post={post} key={index} random={random[index % 5]}></PostCard>
           })}
           {2 > 1 && <Pagination pagination={{ currentPage: currentPage, pageCount: 2 }} onPageChange={(page: number) => setCurrentPage(page)} />}
         </div>
@@ -57,6 +58,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       markdownFilesList,
+      random: ['art', 'nature', 'girl', 'book', 'document',]
     },
   };
 };

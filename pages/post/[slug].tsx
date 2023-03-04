@@ -1,7 +1,7 @@
 import type { NextPage, GetStaticProps, GetStaticPaths, InferGetStaticPropsType } from 'next'
 import React from 'react'
 import { useRouter } from 'next/router'
-import { PersonalWidget, PostDetail } from '../../components'
+import { PostDetail } from '../../components'
 import { getFileIds, getFileData } from '../../utils/posts-md'
 
 const PostPage: NextPage = (post: InferGetStaticPropsType<GetStaticProps>) => {
@@ -16,11 +16,6 @@ const PostPage: NextPage = (post: InferGetStaticPropsType<GetStaticProps>) => {
                 <div className="lg:col-start-2 lg:col-span-10 col-span-1">
                     <PostDetail post={post.Data} />
                 </div>
-                {/* <div className="col-span-1 lg:col-span-4">
-                    <div className="relative lg:sticky top-8">
-                        <PersonalWidget />
-                    </div>
-                </div> */}
             </div>
         </div>
     )
@@ -34,7 +29,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     // 过滤出所有 Markdown 文件，并返回文件名列表
     const markdownFiles = (await getFileIds(folderPath))
 
-    const Data = await getFileData('./articles', params?.slug)
+    const Data = await getFileData(folderPath, params?.slug)
     return {
         props: {
             markdownFiles,

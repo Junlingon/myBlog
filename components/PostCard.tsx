@@ -1,18 +1,18 @@
 import Link from 'next/link'
 import React from 'react'
 import moment from 'moment'
-
 interface Props {
     post: {
         [key: string]: any
-    }
+    },
+    random: string
 }
 
-const PostCard = ({ post }: Props) => {
+const PostCard = ({ post, random }: Props) => {
     return (
         <div className='bg-white shadow-lg rounded-lg p-0 lg:p-8 pb-12 mb-8'>
             <div className="relative overflow-hidden shadow-md pb-80 mb- 6">
-                <img src={`https://source.unsplash.com/720x400?${post.random}`}
+                <img src={`https://source.unsplash.com/720x400?${random}`}
                     alt='图片错误'
                     className="object-top absolute h-80 w-full object-cover shadow-lg rounded-t-lg lg:rounded-lg" />
             </div>
