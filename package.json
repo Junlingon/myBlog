@@ -6,6 +6,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "front-matter": "^4.0.2",
     "graphql": "^16.6.0",
     "graphql-request": "^5.1.0",
     "html-react-parser": "^3.0.9",
@@ -17,6 +18,8 @@
     "react-multi-carousel": "^2.8.2",
     "react-syntax-highlighter": "^15.5.0",
     "rehype-raw": "^6.1.1",
+    "remark": "^14.0.2",
+    "remark-html": "^15.0.2",
     "sass": "^1.58.3"
   },
   "devDependencies": {

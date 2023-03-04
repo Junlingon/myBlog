@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import React from 'react'
-
 import moment from 'moment'
 
 interface Props {
@@ -18,7 +17,7 @@ const PostCard = ({ post }: Props) => {
                     className="object-top absolute h-80 w-full object-cover shadow-lg rounded-t-lg lg:rounded-lg" />
             </div>
             <h1 className='transition duration-700 text-center mb-8 mt-3 hover:-translate-y-1 cursor-pointer hover:text-blue-600 text-3xl font-semibold'>
-                <Link href={`/post/1`}>{post.title}</Link>
+                <Link href={`/post/${post}`}>{post.toString()}</Link>
             </h1>
             <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
                 <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
