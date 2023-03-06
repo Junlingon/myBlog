@@ -5,7 +5,7 @@ const PersonalWidget = () => {
     return (
         <div className=" bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="flex justify-center">
-                <img src='http://localhost:3000/avatar.jpg' alt='头像显示失败'
+                <img src='https://avatars.githubusercontent.com/u/101963030?v=4' alt='头像显示失败'
                     className="rounded-full" height="100px" width="100px" />
             </div>
             <p className='text-center mt-1 text-lg'>

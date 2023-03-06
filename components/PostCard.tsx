@@ -20,7 +20,7 @@ const PostCard = ({ post }: Props) => {
             </h1>
             <div className="block lg:flex text-center items-center justify-center mb-8 w-full">
                 <div className="flex items-center justify-center mb-4 lg:mb-0 w-full lg:w-auto mr-8">
-                    <img src='http://localhost:3000/avatar.jpg' alt=''
+                    <img src='https://avatars.githubusercontent.com/u/101963030?v=4' alt=''
                         className="align-middle rounded-full h-8 w-8" />
                     <p className='inline align-middle text-gray-700 ml-2 text-lg'>JunlinGong</p>
                 </div>
@@ -32,7 +32,7 @@ const PostCard = ({ post }: Props) => {
                 </div>
             </div>
             <p className='text-center text-lg text-gray-700 font-normal px-4 lg:px-20 mb-2'>
-                {post.excerpt}
+                {post.description}
             </p>
         </div>
 
