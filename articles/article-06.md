@@ -10,23 +10,22 @@ tags:
 
 
 ## 前言
-React-Router是React生态里面很重要的一环 常用的路由模式有 <BrowserRouter>, <HashRouter>, <MemoryRouter>
-现在React的单页应用的路由基本都是前端自己管理的，而不像以前是后端路由，React管理路由的库常用的就是React-Router。本文想写一下React-Router的使用，但是光介绍API又太平淡了，而且已经 官方文档 写得很好了，我这里就用一个常见的开发场景来看看React-Router是怎么用的吧。我们一般的系统都会有用户访问权限的限制，某些页面可能需要用户具有一定的权限才能访问
-
+React-Router是React生态里面很重要的一环 常用的路由模式有 *BrowserRouter*, *HashRouter*, *MemoryRouter*
+现在React的单页应用的路由基本都是前端自己管理的，而不像以前是后端路由，React管理路由的库常用的就是React-Router。本文想写一下React-Router的使用，但是光介绍API又太平淡了，而且已经 官方文档 写得很好了，我这里就用一个常见的开发场景来看看React-Router是怎么用的吧。我们一般的系统都会有用户访问权限的限制，某些页面可能需要用户具有一定的权限才能访问           
 登录这块我们使用 ops后台的统一鉴权就可以了 
 菜单这块的权限 喜马安全部针对后台功能鉴权有一套解决方案:  权限中心
-本文主要介绍菜单权限和组件权限的对接实现
+本文主要介绍菜单权限和组件权限的对接实现  
 
 ## 版本
-依赖 | 版本
-react | @17.0.2
-react-router-dom  | @5.2.0 
-antd | @4.15.4
-@xmly/auth-component  | @0.0.9
+依赖 | 版本  
+react | @17.0.2  
+react-router-dom  | @5.2.0   
+antd | @4.15.4  
+@xmly/auth-component  | @0.0.9  
 
 ## 配置数据获取
-不同环境的 productCode, 需要找安全部配置开通, 具体可以联系 @杜红顺
-配置数据的获取我们是从权限中心去拿, 通过安全部提供的 sdk 可以拿到不同环境对应项目的权限数据, 如下
+不同环境的 productCode, 需要找安全部配置开通, 具体可以联系 @杜红顺  
+配置数据的获取我们是从权限中心去拿, 通过安全部提供的 sdk 可以拿到不同环境对应项目的权限数据, 如下  
 
 ```js
 import { init } from '@xmly/auth-component';
@@ -44,15 +43,15 @@ const productCodeConfig = {
 };
 
 const envString = envConfig[env] as 'test' | 'uat' | 'prod';
-
-// 通过安全部提供的sdk初始化权限数据
+//通过安全部提供的sdk初始化权限数据
 init(
   {
-    opsId, // 通过服务端获取
-    productCode: productCodeConfig[envString] || productCodeConfig['test'], // 安全部会生成唯一的code
+    opsId, //通过服务端获取
+    productCode: productCodeConfig[envString] || productCodeConfig['test'], 安全部会生成唯一的code
   },
   envString
 )
+
 ```
 
 
@@ -75,8 +74,8 @@ init(
     }
   ]
 }
-```
-拿到上面的数据我们需要通过 react-router-dom 对菜单的数据进行注册初始化路由, 方案如下:
+```  
+拿到上面的数据我们需要通过 react-router-dom 对菜单的数据进行注册初始化路由, 方案如下:  
 ```js
 import { useAuthorityList } from '@xmly/auth-component';
 
@@ -392,7 +391,3 @@ function initFormServer(list: any) {
 }
 ```
 
-链接导航
-●  权限中心接入指南
-●  权限系统-（新版本）权限验证前端接入文档
-●  获取权限数据 SDK
