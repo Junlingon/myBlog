@@ -1,6 +1,6 @@
 import type { NextPage, GetStaticProps } from 'next'
 import { useState } from 'react'
-import { PostCard, PersonalWidget, PostWidget, Pagination } from '../components'
+import { PostCard, PersonalWidget, PostWidget, Pagination, RelateWidget } from '../components'
 import { getFileIds, getSortedPostsData } from '../utils/posts-md'
 import { ymd } from '../utils/dateformat'
 
@@ -50,6 +50,7 @@ const Home: NextPage<Props> = ({ markdownFilesList, b }) => {
           <div className="lg:sticky relative top-8">
             <PersonalWidget />
             <PostWidget posts={recentData} />
+            <RelateWidget />
           </div>
         </div>
       </div>
