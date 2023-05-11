@@ -1,0 +1,54 @@
+---
+title: 登录逻辑
+description: 记录 && 总结
+date: 2023-05-11
+random: web
+tags:
+    - REACT
+---
+
+
+无输入的时候去登录是采用antd的Form组件去进行拦截的
+![图片](https://uploader.shimo.im/f/NmDX6eIRsyApf40Q.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ)
+
+输入账号密码
+登录的时候
+会去发起一个亲求，根据后台返回的数据来判断是否登录成功
+如果登录失败，会返回code -1
+![图片](https://uploader.shimo.im/f/lIuTOsJdVD87Bc9F.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ)
+利用axios的中间件进行错误处理弹窗显示出来
+
+如果是未登录去访问登录后的页面
+接口的状态码是200 返回的code是401，也是在axios的中间件中处理跳转到登录页
+![图片](https://uploader.shimo.im/f/YrFfhl6VtuV0a7Gv.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ)
+
+使用了EventBus去做了一个发布订阅
+![图片](https://uploader.shimo.im/f/oGzW0ef3V0k5RKAu.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ)
+ 
+app。js来监听这个  
+那换成window。location。href有没有用呢  其实也能达到跳转  
+只不过回一直刷新页面，因为一刷新页面就重新调用接口 反复出现相同情况  
+
+注意一点：前端不需要去关注登录态有没有过期，因为过期了，后端就会返回一个401，就会走到登录页去  
+
+成功就跳转到project界面  
+会发现登录之后的 好像能保存你的登录态，从而进行页面直接访问  
+到底是怎么样，后台就知道我是否登录了呢，使用的还是http，是无状态的  
+
+
+其实是在发起请求的时候，成功响应后    
+后台返回给我们的响应头里面有一个set-cookie  
+当服务端在响应头中设置 Set-Cookie 字段时（例如通过 res.cookie() 方法或者设置响应头 Set-Cookie 字段），浏览器会自动将该 cookie 存储在本地。以后该域名下的任何请求都会携带该 cookie，直到其过期时间到达或者被删除为止。这样就可以实现在前后端之间共享状态信息。具体做法是在服务端设置响应头 Set-Cookie 字段，浏览器在接收到响应时解析该头部信息，将 cookie 的键值对保存在本地；接下来在向服务端发送请求时，浏览器会自动将该 cookie 发送给服务端。 
+![图片](https://uploader.shimo.im/f/4bS2DwTgUST8xZHk.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ)  
+下次发请求就有一个cookie    86400就是一天  一天之后，浏览器就会清理掉  
+
+![图片](https://uploader.shimo.im/f/M3MZ6KuNx6nSb627.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ)  
+![图片]( https://uploader.shimo.im/f/E3H3BCWcLUfmRC7G.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ) 
+
+ctx.session是egg框架底层封装好的使用了 koa-session 中间件来实现 Session 功能，其中包括 Cookie 的读取、存储和更新等操作。 就是说有了这句代码，就会在响应头中添加一个setcookie，cookie的值也是底层封装好了的
+
+退出登录就是后台帮你把cooke删除  
+``··········
+
+![图片]( https://uploader.shimo.im/f/3gY3Rfj9hp1BXzkQ.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2ODM4MTk5NTgsImZpbGVHVUlEIjoiQjFBdzFLWk9Fb1NWb1JxbSIsImlhdCI6MTY4MzgxOTY1OCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.BCA01Rea7k_ITwl9bLSuoRF7gYBbUD2LEEIpxj3EPhQ)  
+后台的config.default.js中设置了鉴权的操作
