@@ -1,6 +1,6 @@
 ---
-title: React16、17、18版本新特性
-description: 
+title: React16、17、18版本区别
+description: 从背景和解决的痛点来阐述
 date: 2023-03-25
 random: art
 tags:
@@ -9,227 +9,29 @@ tags:
     - REACT
 ---
 
-# react-16版本新特性
-### 一、hooks
+# react-16
++ *渲染性能问题*：早期采用的是 Stack Reconciliation 算法，在组件状态变化时进行依次递归比较更新，无法在中途中断，造成视图的阻塞渲染。而 React Fiber 算法改进了 Stack Reconciliation，采了一种时间分片技术，可以把一个更新任务分片，每个片段让出执行权给浏览器，其他任务则等待；在新的任务到来时，它会中断之前的任务，重新分配时间片以保证优先级的合理性，提高页面性能。
 
-```js
-import { useState } from 'react'
- 
-function App() {
-  // 参数：状态初始值比如,传入 0 表示该状态的初始值为 0
-  // 返回值：数组,包含两个值：1 状态值（state） 2 修改该状态的函数（setState）
-  const [count, setCount] = useState(0)
-  return (
-    <button onClick={() => { setCount(count + 1) }}>{count}</button>
-  )
-}
-export default App
-```
++ *组件复杂度问题*：类式组件需要维护生命周期函数、状态属性、事件处理等很多逻辑，随着组件复杂度的增加，不易于组件逻辑的复用，而 Hooks 的出现被认为是函数式编程的一次进步，它可以把逻辑解耦成多个更小的，单独的，比较连贯的函数单元，便于组逻辑的封装和重用。
 
-### 二、memo、lazy、Suspense
-Memo是React中的高级功能，它可以记忆组件的输出结果，并在组件的输入数据不变的情况下，直接返回记忆的结果，从而优化应用的性能。Memo组件可以接受一个回调函数作为参数，该回调函数返回新的输出结果。当Memo组件的输入数据发生变化时，会调用回调函数，重新计算输出结果。
++ *组件之间状态共享问题*：之前实现组件的状态共享是通过状态提升和 HOC 方式而 Hooks 的 useReducer、useContext 和 useImperativeHandle 等钩子函数可以在组件间跨层级共享状态，在保证组件封装与复用的同时增强组件的灵活性和通用性。
 
-Lazy是React 16.6版本中新增的功能，它可以实现组件的懒加载。懒加载是指当组件需要渲染时，才会进行加载和初始化，而不是在应用启动时就加载和初始化。这可以提高应用的性能，并减少应用的初始加载时间。Lazy组件可以接受一个函数作为参数，该函数返回需要懒加载的组件。
++ *组件复杂度和可维护性问题*：在 提供的钩子函数 API 下，组件的函数间调用构成了直接的图形化结构，方便开发者查看代码调试用例，可维护性更加高效。同时，由于提了 state 和 effect 等钩子函数 API，进一步地把不同的逻辑清晰地拆分开，使代码逻辑更具可读性。  
 
-Suspense是React 16.6版本中新增的功能，它可以实现组件的异步加载。异步加载是指当组件需要渲染时，如果组件的依赖项还没有加载完成，就会显示一个占位符，直到依赖项加载完成后再显示组件。这可以提高应用的性能，并减少应用的初始加载时间。Suspense组件可以接受一个fallback属性，该属性指定一个占位符组件。当异步加载的组件还没有加载完成时，就会显示该占位符组件。
-```js
-import React, { Suspense } from 'react';
- 
-const OtherComponent = React.lazy(() => import('./OtherComponent'));
-function MyComponent() {
-  return (
-    <div>
-      <Suspense fallback={<div>Loading...</div>}>
-        <OtherComponent />
-      </Suspense>
-    </div>
-  );
-}
-```
-
-### 三、Profiler
-
-Profiler 能添加在 React 树中的任何地方来测量树中这部分渲染所带来的开销
-
-```js
-function onRenderCallback(
-    id, // 发生提交的 Profiler 树的 “id”
-    phase, // "mount" （如果组件树刚加载） 或者 "update" （如果它重渲染了）之一
-    actualDuration, // 本次更新 committed 花费的渲染时间
-    baseDuration, // 估计不使用 memoization 的情况下渲染整棵子树需要的时间
-    startTime, // 本次更新中 React 开始渲染的时间
-    commitTime, // 本次更新中 React committed 的时间
-    interactions // 属于本次更新的 interactions 的集合
-) {
-    // 合计或记录渲染时间。。
-    console.log(
-      id, // 发生提交的 Profiler 树的 “id”
-      phase, // "mount" （如果组件树刚加载） 或者 "update" （如果它重渲染了）之一
-      actualDuration, // 本次更新 committed 花费的渲染时间
-      baseDuration, // 估计不使用 memoization 的情况下渲染整棵子树需要的时间
-      startTime, // 本次更新中 React 开始渲染的时间
-      commitTime, // 本次更新中 React committed 的时间
-      interactions // 属于本次更新的 interactions 的集合
-    );
-}
-//Navigation update 0 0 57313.90000009537 57314.5 Set(0) {size: 0}
- 
-<Profiler id="Navigation" onRender={onRenderCallback}>
-  <div
-    onClick={() => {
-      setNumber((e) => e + 1);
-    }}
-  >
-    test
-  </div>
-</Profiler>
-```
-
-### 四、createContext、createRef、forwardRef、生命周期函数的更新、Strict Mode
-
-```js
-// 父组件中
-const ThemeContext = React.createContext("light");
-
-const ParentComponent = () => {
-  const inputRef = createRef();
-  
-  return (
-    <ThemeContext.Provider value="dark">
-      <ChildComponent ref={inputRef} />
-      <button
-        onClick={() => {
-          inputRef.current.focus();
-        }}
-      >
-        获取焦点
-      </button>
-    </ThemeContext.Provider>
-  );
-}
-
-//子组件
-const ChildComponent = forwardRef((props, inputRef) => {
-  const value = useContext(ThemeContext);
-  
-  return (
-    <>
-      <input id="input" type="text" ref={inputRef} />
-      <button
-        style={{ background: "yellow" }}
-        onClick={() => {
-          console.log(value);
-        }}
-      >
-        测试
-      </button>
-    </>
-  );
-});
-```
+因此，React 16 版本中引入 Hooks 和 React Fiber 是为了解决 React 早期在性能、复杂度和可维护性上存在的问题，让开发者更加高效地开发 React 应用。
 
 
-### 五、Fragment
-
-```js
-<React.Fragment>
-  <ChildA />
-  <ChildB />
-  <ChildC />
-</React.Fragment>
-```
-
-
-### 六、createPortal
-
-`ReactDOM.createPortal(child, container)`
 
 # react-17版本新特性
-### 一、全新的 JSX 转换
+看B站视频上一个老师说，17版本的最大特点就没特点🌟  
+**React 17 版本主要解决以下两个问题：**  
 
-React 17以前，React中如果使用JSX，则必须像下面这样导入React，否则会报错，这是因为旧的 JSX 转换会把 JSX 转换为 React.createElement(…) 调用。
++ 代码迁移问题：由于 React 17 版本中不再通过事件委派方式实现事件处理，而采用了直接绑定事件处理函数的方式，这就意味着在 React 中原本由 event 对象传递事件处理逻辑的方式无法再使用，需要对代码进行修改和适配，这样会影响到已经存在的 React 应用的迁移工作。React 17 将进行向后兼容中断，保证旧版本仍然按照以前的方式运行，同时在新版本中逐步引入新的 API，给予用户更长的调整时间，使代码迁移变得更加平滑。  
 
-```js
-import React from 'react';
-export default function App(props) {
-  return <div>app </div>;
-}
-```
++ 事件处理问题：在 React 16 及之前的版本中，事件处理的机制采用的是事件委派，在事件冒泡阶段处理事件，但这种方式容易导致事件性能问题，尤其是在复杂应用中，大量事件绑定会增加漫长的事件冒泡和依次执行过程，从而影响页面的性能。而 React 17 版本中通过直接绑定事件处理函数的方式来处理事件，从而减少了冒泡过程中的性能消耗。  
 
-### 二、事件委托的变更
+总之，React 17 的背景是为了保证 React 应用的兼容性和稳定性，在解决事件处理问题的同时，还能兼顾向后兼容，逐渐引入新的 API，便于开发者根据实际需求进行使用，这也是 React 长期维护的重要举措。
 
-在 React 16 或更早版本中，React 会由于事件委托对大多数事件执行 document.addEventListener()。但是一旦你想要局部使用React，那么React中的事件会影响全局，当把React和jQuery一起使用，那么当点击input的时候，document上和React不相关的事件也会被触发，这符合React的预期，但是并不符合用户的预期。
-
-React React17不再将事件添加在document上，而是添加到渲染 React 树的根 DOM 容器中：
-
-```js
-const rootNode = document.getElementById('root');
-ReactDOM.render(<App />, rootNode);
-```
-
-
-### 三、事件系统相关更改
-
-除了事件委托这种比较大的更改，事件系统上还发生了一些小的更改，与以往不同，React 17中onScroll 事件不再冒泡，以防止出现常见的混淆 。
-
-React 的 onFocus 和 onBlur 事件已在底层切换为原生的 focusin 和 focusout 事件。它们更接近 React 现有行为，有时还会提供额外的信息。
-
-捕获事件（例如，onClickCapture）现在使用的是实际浏览器中的捕获监听器。这些更改会使 React 与浏览器行为更接近，并提高了互操作性。
-
-注意：尽管 React 17 底层已将 onFocus 事件从 focus 切换为 focusin，但请注意，这并未影响冒泡行为。在 React 中，onFocus 事件总是冒泡的，在 React 17 中会继续保持，因为通常它是一个更有用的默认值。
-
-### 四、去除事件池
-
-在React 17 以前，如果想要用异步的方式使用事件e，则必须先调用调用 e.persist() 才可以，这是因为 React 在旧浏览器中重用了不同事件的事件对象，以提高性能，并将所有事件字段在它们之前设置为 null。如下面的例子：
-
-```js
-function FunctionComponent(props) {
-  const [val, setVal] = useState("");
-  const handleChange = e => {
-    // setVal(e.target.value);
-    // React 17以前，如果想用异步的方式使用事件e，必须要加上下面的e.persist()才可以
-    // e.persist();
-    // setVal(data => e.target.value);
-  };
-  return (
-    <div className="border">
-      <input type="text" value={val} onChange={handleChange} />
-    </div>
-  );
-}
-```
-但是这种使用方式有点抽象，经常会让对React不太熟悉的开发者懵掉，但是值得开心的是，React 17 中移除了 “event pooling（事件池）“，因为以前加入事件池的概念是为了提升旧浏览器的性能，对于现代浏览器来说，已经不需要了。因此，上面的代码中不使用e.persist()；也能达到预期效果。
-
-### 五、副作用清理时间
-
-React 17以前，当组件被卸载时，useEffect和useLayoutEffect的清理函数都是同步运行，但是对于大型应用程序来说，这不是理想选择，因为同步会减缓屏幕的过渡（例如，切换标签），因此React 17中的useEffect的清理函数异步执行，也就是说如果要卸载组件，则清理会在屏幕更新后运行。如果你某些情况下你仍然希望依靠同步执行，可以用 useLayoutEffect。
-
-### 六、启发式更新算法更新
-
-React 16开始替换掉了`Stack Reconciler`，开始使用启发式算法架构的的`Fiber Reconciler`。那么为什么要发生这个改变呢？
-
-React的killer feature： virtual dom
-
-- React15.x - Stack Reconciler
-- React16 - Fiber Reconciler
-- React17 - Fiber Reconciler (进阶版 - 优先级区间)
-1. 为什么需要fiber：对于大型项目，组件树会很大，这个时候递归遍历的成本就会很高，会造成主线程被持续占用，结果就是主线程上的布局、动画等周期性任务就无法立即得到处理，造成视觉上的卡顿，影响用户体验。
-2. 任务分解的意义：解决上面的问题
-3. 增量渲染（把渲染任务拆分成块，匀到多帧）
-4. 更新时能够暂停，终止，复用渲染任务
-5. 给不同类型的更新赋予优先级
-6. 并发方面新的基础能力
-7. 更流畅
-
-React 17中更新了启发式更新算法，具体表现为曾经用于标记fiber节点更新优先级的expirationTime换成了为lanes，前者为普通数字，而后者则为32位的二进制，了解二进制运算的都比较熟悉了，这种二进制的lanes是可以指定几个优先级的，而不是像以前expirationTime只能标记一个。
-
-之所以做这种改变，原因就是在于`expirationTimes`模型不能满足`IO操作`（Suspense），Suspense用法如下：
-
-```js
-<React.Suspense fallback={<Loading />}>
-   <Content />
-</React.Suspense>
-```
 
 # react-18版本新特性
 ### 一、客户端渲染 API
