@@ -1,7 +1,7 @@
 ---
 title: useShouldRenderModel
 description: 这是一个关于3D兼容性检测的hooks钩子
-date: 2023-08-5
+date: 2023-08-05
 random: iPhone
 tags:
     - REACT
