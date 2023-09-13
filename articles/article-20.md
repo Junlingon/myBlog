@@ -51,11 +51,11 @@ import  export
 
 希望能有工具能满足我们的设想
 编译我们的代码  es6变es5 （环境兼容问题就不存在了）；
-[图片:](https://uploader.shimo.im/f/RwMDatD0r11yAW81.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ1OTk5MTcsImZpbGVHVUlEIjoiOTAzMEoxV01aeVRnR0xrdyIsImlhdCI6MTY5NDU5OTYxNywiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.hAgIXAzNkEP7gicY_94jJv1-2--RArvRGkAG6rnN4RU)
+[![onJZwh.png](https://www.helloimg.com/images/2023/09/13/onJZwh.png)](https://www.helloimg.com/image/onJZwh)
 
 把散落的文件打包在一起（解决了频繁对模块文件发出请求的问题）
-[图片:](https://uploader.shimo.im/f/SHjG8H1hWpAVTryL.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ1OTk5MTcsImZpbGVHVUlEIjoiOTAzMEoxV01aeVRnR0xrdyIsImlhdCI6MTY5NDU5OTYxNywiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.hAgIXAzNkEP7gicY_94jJv1-2--RArvRGkAG6rnN4RU)
+[![onJohc.png](https://www.helloimg.com/images/2023/09/13/onJohc.png)](https://www.helloimg.com/image/onJohc)
 
 支持不同种类的前端类型（对整个前应用来讲）
-[图片: ](https://uploader.shimo.im/f/MPQBVJgbo9Vdzkk4.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ1OTk5MTcsImZpbGVHVUlEIjoiOTAzMEoxV01aeVRnR0xrdyIsImlhdCI6MTY5NDU5OTYxNywiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.hAgIXAzNkEP7gicY_94jJv1-2--RArvRGkAG6rnN4RU)
+[![onJPxq.png](https://www.helloimg.com/images/2023/09/13/onJPxq.png)](https://www.helloimg.com/image/onJPxq)
 
