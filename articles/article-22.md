@@ -1,0 +1,77 @@
+---
+title: 重学webpack（三）
+description: 面试痛点之webpack
+date: 2023-09-14
+random: Source 
+tags:
+    - tools
+---
+
+图片: https://uploader.shimo.im/f/DHHgbNAo0TsUKJg0.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ3OTI2NzQsImZpbGVHVUlEIjoicnAzT00wT3hZS0g5bWFrbSIsImlhdCI6MTY5NDc5MjM3NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.-4BaLDtLfuCS3y2hvFbxFuNVd5oe1XDvyHElUnQsoHU
+这个过程过于原始，开发效率低
+
+我们需要
+以http Sever运行，更接近生产环境状态，ajax api
+代码修改后 自动编译 +自动刷新
+提供Source Map支持
+
+
+自动编译  自动刷新
+watch工作模式，监听变化，自动重新打包
+--wacth
+browser-sync 去开启http服务，并且监听dist文件目录下的变化
+缺点就是，使用了两个工具去实现，比较麻烦，而且webpack会不断的把文件写入磁盘，browser-sync再从磁盘中读出来，就会多出两步的磁盘读写操作
+
+最好的是使用 webapck -dev -serve
+为了提高工作效率，并没有把打包结果写入磁盘中，也就是没有把dist文件夹展示在文件夹中，而是存在内存中，http sever就是从内存中把文件读出来，减少磁盘读写操作
+通过 --open去直接打开浏览器
+
+Dev Server 默认只会serve打包输出文件，假如静态资源也需要serve，需要额外的去告诉Dev serve，，，去配置文件中添加一个devServer配置对象，添加一个contentBase属性来指定额外的静态资源路径
+
+热更新
+自动刷新会导致一个问题，页面状态的丢失，希望能在页面不刷新的前提下，模块也可以及时更新=> 热更新HMR（应用运行过程中实时去替换某个模块，应用运行状态不受影响）
+他集成在了 Dev sever中 通过--hot去开启，或者配置文件去开启
+webpack中的HMR并不可以开箱即用，需要手动处理热更新逻辑
+Q1. 为什么样式文件的热更新开箱即用
+因为样式文件是经过loader处理的，在style loader中就自动处理样式文件的热更新
+Q2 为什么样式就可以自动处理
+因为更新后的css及时替换后，就能覆盖之前的样式，实现更新
+js是没有任何规律的，在一个模块中可能导出的是一个对象。或者是字符串，对导出成员的使用也是不相同的，就不知道如何去处理更新的js模块，就没有通用的模块替换方案
+Q3 像vue react这种脚手架没有手动处理，js照样可以热更新
+那是因为使用框架开发，每种文件就有了规律，框架就通过了一些规则，例如react中每个模块文件需要导出一个函数或者一个类，就有了通用的替换办法，例如函数更新了，拿过来再执行一下
+
+通过HMR的API去处理热更新  module.hot.accept(路径，处理函数)
+
+这样写下来，你可能会觉得比较麻烦，需要去写一些额外的代码，甚至觉得不如不用、
+个人觉得是利大于弊，道理就相当于现在开发者都愿意去写一些单元测试，对于一个长期开发的项目，这点额外的工作并不算什么，而且能为自己的代码设计一下规律的话，那也可以实现一些通用的替换方案，如果是框架的话，那别人都已经替你写好了，这样是大部分人为什么选择集成式框架的原因，因为足够简单
+
+HMR的注意事项
+1.处理热更新的代码报错会导致自动刷新，错误信息会随着自动刷新被清楚
+使用hotOnly：true，浏览器就不会去触发自动刷新了
+2.编写了HMR多了一些与业务无关的代码，会不会有影响
+因为处理热更新的代码打包后都被移除掉了，不会有影响
+
+跨域
+开发服务器的缘故，我们会将应用运行在localhost上，上线后应用和api会部署到同源地址下面
+实际生产中可以直接访问Api
+图片: https://uploader.shimo.im/f/S5FsdKUrKR7zrQ7S.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ3OTI2NzQsImZpbGVHVUlEIjoicnAzT00wT3hZS0g5bWFrbSIsImlhdCI6MTY5NDc5MjM3NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.-4BaLDtLfuCS3y2hvFbxFuNVd5oe1XDvyHElUnQsoHU
+开发环境就会产生跨域请求问题
+图片: https://uploader.shimo.im/f/RxmoVf1KmBvHsWcZ.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ3OTI2NzQsImZpbGVHVUlEIjoicnAzT00wT3hZS0g5bWFrbSIsImlhdCI6MTY5NDc5MjM3NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.-4BaLDtLfuCS3y2hvFbxFuNVd5oe1XDvyHElUnQsoHU
+
+可以通过cors去跨域解决，但是并不是任何情况下API都支持cors，使用cors的前提是API必须支持
+如果前后端同源部署的话，是没必要去开启cors，所以解决方法是  在开发服务器中去开启代理服务，Dev Server就支持代理服务支持
+Proxy：
+图片: https://uploader.shimo.im/f/XhKS6tC7VRRncWs8.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ3OTI2NzQsImZpbGVHVUlEIjoicnAzT00wT3hZS0g5bWFrbSIsImlhdCI6MTY5NDc5MjM3NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.-4BaLDtLfuCS3y2hvFbxFuNVd5oe1XDvyHElUnQsoHU
+
+Source Map
+图片: https://uploader.shimo.im/f/vMJxppbykBOYLG2t.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ3OTI2NzQsImZpbGVHVUlEIjoicnAzT00wT3hZS0g5bWFrbSIsImlhdCI6MTY5NDc5MjM3NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.-4BaLDtLfuCS3y2hvFbxFuNVd5oe1XDvyHElUnQsoHU
+
+eval：将我们的模块代码放到eval函数里面去执行，通过Source URl去标注模块路径，并没有生成source map，只能定位到哪一个文件出现了错误
+eval-source-map：可以具体定位到哪个文件的哪一行哪一列，生成了source-map
+cheap-eval-source-map：阉割版的source，不能定位到列，生成的速度会快很多
+cheap-module-eval-source-map：也只能定位到行，能定位到我们自己编写的源代码，而上面那个是定位到编译后的代码中（loader加工后的），这个模式是推荐于开发环境下的，编码风格每行不会超过80个字符，定位到行就够了，其次就是loader转换后的差异就比较大，打包启动速度慢一些，但是使用Dev sever去重写打包而不是每次都是启动打包，重写打包速度快
+图片: https://uploader.shimo.im/f/32ajSVPpx9p5VHqs.png!thumbnail?accessToken=eyJhbGciOiJIUzI1NiIsImtpZCI6ImRlZmF1bHQiLCJ0eXAiOiJKV1QifQ.eyJleHAiOjE2OTQ3OTI2NzQsImZpbGVHVUlEIjoicnAzT00wT3hZS0g5bWFrbSIsImlhdCI6MTY5NDc5MjM3NCwiaXNzIjoidXBsb2FkZXJfYWNjZXNzX3Jlc291cmNlIiwidXNlcklkIjo3MjA3MjQwN30.-4BaLDtLfuCS3y2hvFbxFuNVd5oe1XDvyHElUnQsoHU
+inline-source-map：主要的区别是source map文件是使用dataUrl嵌入到代码中的，代码体积大很多（不推荐）
+nosources-source-map：开发工具中看不到源代码，也提供了行内信息
+
+生厂环境中，使用none，不使用source-map去打包，因为会暴露源代码，调试和找错误都是开发阶段的事情，而不是在生产环境去调试
