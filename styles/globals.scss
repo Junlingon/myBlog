@@ -4,14 +4,18 @@
   h1 {
     @apply text-2xl font-bold;
   }
+
   h2 {
     @apply text-xl font-bold;
   }
+
   h3 {
     @apply text-lg font-bold;
   }
 
-  menu, ol, ul {
+  menu,
+  ol,
+  ul {
     @apply list-decimal p-0 ml-5;
   }
 }
@@ -28,8 +32,9 @@ body {
   margin: 0;
   line-height: 1.625;
   font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  &:before{
-    content:'';
+
+  &:before {
+    content: '';
     content: "";
     width: 100%;
     height: 100vh;
@@ -44,27 +49,29 @@ body {
   }
 }
 
-.text-shadow{
+.text-shadow {
   text-shadow: 0px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
-.adjacent-post{
-  & .arrow-btn{
+.adjacent-post {
+  & .arrow-btn {
     transition: width 300ms ease;
     width: 50px;
   }
-  &:hover{
-    & .arrow-btn{
+
+  &:hover {
+    & .arrow-btn {
       width: 60px;
     }
   }
 }
 
 .react-multi-carousel-list {
-  & .arrow-btn{
+  & .arrow-btn {
     transition: width 300ms ease;
     width: 50px;
-    &:hover{
+
+    &:hover {
       width: 60px;
     }
   }
@@ -81,7 +88,7 @@ blockquote {
   padding-left: 0.6rem;
 }
 
-p code {
+code {
   background-color: rgb(237, 237, 235);
   padding: 0 0.2rem;
   margin: 0 0.2rem;
@@ -92,4 +99,8 @@ p code {
 
 * {
   box-sizing: border-box;
+}
+
+pre {
+  background-color: cornsilk;
 }
