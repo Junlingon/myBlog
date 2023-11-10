@@ -8,172 +8,329 @@ tags:
 ---
 
 
+# 1.什么是移动端适配
+**两个概念：**
 
-要适配移动端和PC端，可以采用响应式设计和自适应设计两种方法。以下是一些建议和技巧：
+1. 自适应：根据不同的设备屏幕大小来自动调整尺寸，大小。
+2. 响应式：会随着屏幕的实时变动而自动调整，是一种自适应。
 
-1. 响应式设计（Responsive Design）：
+# 2.理解视口viewport
+## 2.1 PC端的视口
+1. 在浏览器中，我们可以看到的区域就是视口（viewport）
+2. fixed就是相对于视口来进行定位的。
+3. 在PC端的页面中，我们是不需要对视口进行区分，因为我们的布局视口和视觉视口是同一个
 
-响应式设计是一种通过CSS媒体查询（Media Queries）实现的，可以让网页根据不同的设备和屏幕尺寸自动调整布局和样式。要实现响应式设计，可以遵循以下步骤：
+## 2.2移动端的视口
+在移动端，不太一样，你布局的视口和你可见的视口是不太一样的。
 
-- 为HTML文档添加viewport元标签，以确保页面在不同设备上的正确缩放：
-  ```html
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  ```
++ 这是因为移动端的网页窗口往往比较小，我们可能会希望一个大的网页在移动端可以完整的显示口
++ 所以在默认情况下，移动端的布局视口是大于视觉视口的;
+所以在移动端，我们可以将视口划分为三种情况:
 
-- 使用CSS媒体查询，根据设备类型和屏幕尺寸调整样式。例如：
-  ```css
-  @media screen and (max-width: 768px) {
-    /* 移动端样式 */
-  }
+布局视口 (layout viewport)
+视觉视口 (visuallayout)
+理想视口 (ideallayout)
 
-  @media screen and (min-width: 769px) {
-    /* PC端样式 */
-  }
-  ```
+### 2.2.1 布局视口
+默认情况下，PC端的网页在移动端会如何显示？
 
-- 使用百分比、rem或者vw/vh等相对单位，而非固定像素值，以实现自适应布局。
++ 会按照宽度为980px来布局一个页面的盒子和内容。
++ 为了显示可以完整的显示页面中，对整个页面进行缩小。
+我们相对于980px布局的这个视口，称之为布局视口 (layoutviewport) 
 
-- 使用flexbox（弹性盒子）或grid（网格布局）进行布局，以便更容易地实现响应式设计。
+布局视口的默认宽度是980px
 
-2. 自适应设计（Adaptive Design）：
+所以我们没有对项目移动端适配的话在手机打开是会将项目***同比例缩小。**
+### 2.2.2 视觉视口 (visual viewport)
 
-自适应设计是根据设备类型和屏幕尺寸为用户提供定制化的界面。与响应式设计相比，自适应设计更注重为不同设备提供专门优化的界面和体验。实现自适应设计的方法包括：
+ 默认情况下，我们按照980px显示内容，那么右侧有一部分区域就会无法显示，所以手机端浏览器会默认对页面进行缩放以显示到用户的可见区域中  那么显示在可见区域的这个视口，就是视觉视口 (visual viewport)
 
-- 使用JavaScript或后端语言检测设备类型和屏幕尺寸，根据结果为用户提供不同的HTML、CSS和JavaScript文件。
+2.2.3理想视口 (ideallayout)
+如果所有的网页都按照980px在移动端布局，那么最终页面都会被缩放显示
 
-- 为移动端和PC端设计不同的布局和交互方式，以提供更好的用户体验。
+事实上这种方式是不利于我们进行移动的开发的，我们希望的是设置100px，那么显示的就是100px;
 
-- 考虑使用开发框架，如Bootstrap等，它们提供了许多预设的响应式组件和布局，可以帮助你更快地实现自适应设计。
+如何做到这一点呢? 通过设置理想视口 (ideal viewport) 
 
-3. 其他注意事项：
 
-- 在设计过程中，考虑使用移动优先（Mobile First）的策略，先为移动端设计，再扩展到PC端。这样可以确保在各种设备上都能提供良好的用户体验。
+理想视口就是布局视口 === 视觉视口   
 
-- 在开发过程中，使用浏览器的开发者工具进行设备模拟，以便检查和调试不同设备和屏幕尺寸下的布局和样式。
+反着说就是布局视口 === 视觉视口 就是理想视口  
 
-- 在测试过程中，确保在多种设备和浏览器上进行充分的测试，以确保兼容性和性能。
-
-通过以上方法，可以实现移动端和PC端的适配，为用户提供良好的跨设备体验。
-、
-
-针对iPhone的多种型号，我们可以使用CSS媒体查询（Media Queries）针对不同的屏幕尺寸进行样式调整。以下是一些建议和技巧：
-
-1. 针对不同尺寸的iPhone设备，可以使用媒体查询进行样式调整。例如：
-
-```css
-/* 针对 iPhone 5/5S/5C/SE (第一代) */
-@media screen and (device-aspect-ratio: 2/3) {
-  /* 样式调整 */
-}
-
-/* 针对 iPhone 6/6S/7/8/SE (第二代) */
-@media screen and (device-aspect-ratio: 375/667) {
-  /* 样式调整 */
-}
-
-/* 针对 iPhone 6 Plus/6S Plus/7 Plus/8 Plus */
-@media screen and (device-aspect-ratio: 16/9) {
-  /* 样式调整 */
-}
-
-/* 针对 iPhone X/XS/11 Pro */
-@media screen and (device-aspect-ratio: 1125/2436) {
-  /* 样式调整 */
-}
-
-/* 针对 iPhone XR/11 */
-@media screen and (device-aspect-ratio: 828/1792) {
-  /* 样式调整 */
-}
-
-/* 针对 iPhone XS Max/11 Pro Max */
-@media screen and (device-aspect-ratio: 1242/2688) {
-  /* 样式调整 */
-}
+可以通过meta标签设置布局视口(淘宝网也是这样写法)
+```js
+<meta name="viewport" content="width=device-width, initial-scale=1.0, 
+user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 ```
+还可以设置别的meta中的viewport;
 
-2. 使用相对单位，如百分比、rem或者vw/vh等，而非固定像素值，可以让布局和样式在不同尺寸的屏幕上更自适应。
-
-3. 在设计过程中，考虑使用移动优先（Mobile First）的策略，先针对较小的屏幕尺寸进行设计，然后逐步扩展到较大的屏幕尺寸。
-
-4. 使用flexbox（弹性盒子）或grid（网格布局）进行布局，以便更容易地实现自适应设计。
-
-5. 在开发过程中，使用浏览器的开发者工具进行设备模拟，以便检查和调试不同设备和屏幕尺寸下的布局和样式。
-
-6. 在测试过程中，确保在多种设备和浏览器上进行充分的测试，以确保兼容性和性能。
-
-通过以上方法，可以实现针对不同型号iPhone设备的适配，为用户提供良好的跨设备体验。
+ | 值	              | 可能的附加值	                        | 描述
+ | width            | 	一个正整数，或者字符串device-width	 | 定义 viewport 的宽度。
+ | height	          | 一个正整数，或者字符串 device-height	 | 定义 viewport 的高度。未被任何浏览器使用
+ | initial-scale	  | 一个0.0和10.0之间的正数	              | 定义设备宽度与 viewport 大小之间的缩放比例
+ | maximum-scale	  | 一个0.0和10.0之间的正数	    | 定义缩放的最大值，必须大于等于minimum-scale.否则表现将不可预测。
+ | minimum-scale	  | 一个0.0和10.0之间的正数	 | 定义缩放的最小值，必须小于等于 maximum-scale.否则表现将不可预测。
+ | user-scalable	  | yes 或者 no	 | 默认为 yes，如果设置为 no，将无法缩放当前页面。浏览器可以忽略此规则
 
 
+# 3.移动端适配方案
+## 3.1  rem单位+动态html的font-size(方案一)
+rem单位是相对于html元素的font-size来设置的，那么如果我们需要在不同的屏幕下有不同的尺寸，可以动态的修改html的font-size尺寸。
 
-在面试中，面试官可能会通过以下几种方式来考察你对移动端和PC端适配的理解和实践经验：
+在开发中，我们只需要考虑两个问题:
 
-1. 提问：面试官可能会问一些关于移动端和PC端适配的基本概念和技术问题，例如：
-   - 什么是响应式设计？如何实现响应式设计？
-   - 什么是自适应设计？如何实现自适应设计？
-   - 移动优先和桌面优先的设计策略有什么区别？
-   - 如何使用CSS媒体查询实现不同设备和屏幕尺寸的样式适配？
-   - 如何处理Retina屏幕的高分辨率图片适配？
-
-2. 实战演示：面试官可能会让你现场编写代码，展示你如何实现一个简单的响应式或自适应布局。例如，设计一个在移动端显示为单列布局，在PC端显示为多列布局的页面。
-
-3. 项目经验：面试官可能会让你分享一下你在过去的项目中是如何处理移动端和PC端适配的，以及遇到的挑战和解决方案。例如，你可以谈论在实现响应式设计时遇到的布局问题，以及如何通过CSS技巧解决这些问题。
-
-4. 思考和优化：面试官可能会询问你在移动端和PC端适配过程中的一些优化策略和技巧，例如：
-   - 如何优化网站在移动设备上的加载速度？
-   - 如何在不同设备上提供良好的用户体验？
-   - 如何提高网站的可访问性和无障碍性？
-
-5. 案例分析：面试官可能会给你一个实际的网站或应用，让你分析其在移动端和PC端适配方面的优缺点，并提出改进建议。
-
-通过以上几种方式，面试官可以了解你在移动端和PC端适配方面的知识和实践能力。为了在面试中取得好成绩，建议你提前准备这些问题和实战演示，以便在面试时能够自信地回答和展示。
-
-
-1. 什么是响应式设计？如何实现响应式设计？
-
-响应式设计是一种网页设计方法，通过CSS媒体查询实现在不同设备和屏幕尺寸下自动调整布局和样式。实现响应式设计的关键步骤包括：
-- 为HTML文档添加viewport元标签，以确保页面在不同设备上的正确缩放。
-- 使用CSS媒体查询，根据设备类型和屏幕尺寸调整样式。
-- 使用相对单位（如百分比、rem或vw/vh等），而非固定像素值，以实现自适应布局。
-- 使用flexbox或grid布局进行页面布局。
-
-2. 什么是自适应设计？如何实现自适应设计？
-
-自适应设计是一种根据设备类型和屏幕尺寸为用户提供定制化的界面的设计方法。与响应式设计相比，自适应设计更注重为不同设备提供专门优化的界面和体验。实现自适应设计的方法包括：
-- 使用JavaScript或后端语言检测设备类型和屏幕尺寸，根据结果为用户提供不同的HTML、CSS和JavaScript文件。
-- 为移动端和PC端设计不同的布局和交互方式，以提供更好的用户体验。
-- 考虑使用开发框架，如Bootstrap等，它们提供了许多预设的响应式组件和布局，可以帮助你更快地实现自适应设计。
-
-3. 移动优先和桌面优先的设计策略有什么区别？
-
-移动优先策略是指在设计过程中首先考虑移动端的需求和限制，然后再扩展到桌面端。这种策略有助于确保在各种设备上都能提供良好的用户体验。而桌面优先策略是指先为桌面端设计，再适配到移动端。这种策略可能导致移动端的用户体验不佳，因为移动端的限制和需求可能没有得到充分考虑。
-
-4. 如何使用CSS媒体查询实现不同设备和屏幕尺寸的样式适配？
-
-CSS媒体查询允许根据设备类型、屏幕尺寸、分辨率等条件应用不同的样式。使用媒体查询的语法如下：
-```css
-@media screen and (max-width: 768px) {
-  /* 移动端样式 */
-}
-
-@media screen and (min-width: 769px) {
-  /* PC端样式 */
-}
+* 问题一: 针对不同的屏幕，设置html不同的font-size;
+* 问题二: 将原来要设置的尺寸，转化成rem单位;
+### 3.1.1第一种方式：媒体查询
+可以通过媒体查询来设置不同尺寸范围内的屏幕html的font-size尺寸
+```js
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <style>
+        /* 媒体查询 */
+        @media screen and (min-width:320px) {
+            html{
+                font-size: 20px;
+            }
+        }
+        @media screen and (min-width:375px) {
+            html{
+                font-size: 24px;
+            }
+        } 
+        @media screen and (min-width:414px) {
+            html{
+                font-size: 28px;
+            }
+        } 
+        @media screen and (min-width:480px) {
+            html{
+                font-size: 32px;
+            }
+        } 
+ 
+        .box {
+            width: 5rem;
+            height: 5rem;
+            background: #8ec04c;
+        }
+    </style>
+ 
+ 
+    <div class="box">
+        <p></p>
+    </div>
 ```
-在这个例子中，当屏幕宽度小于或等于768px时，应用移动端样式；当屏幕宽度大于或等于769px时，应用PC端样式。
+@media screen and开头的语句就是媒体查询语句。@media后面是一个或者多个表达式，如果表达式为真，则应用样式。@media screen and (min-width:320px)  这句话的意思就是：设备宽度小于320就选中这个样式。
 
-5. 如何处理Retina屏幕的高分辨率图片适配？
+**媒体查询的缺点:**
 
-为了在Retina屏幕上显示高质量的图片，可以使用以下方法：
-- 使用CSS媒体查询针对高分辨率屏幕提供2倍或更高分辨率的图片。例如：
-  ```css
-  @media screen and (-webkit-min-device-pixel-ratio: 2),
-         screen and (min-resolution: 192dpi) {
-    /* 为高分辨率屏幕提供2倍分辨率的图片 */
-    .logo {
-      background-image: url('logo@2x.png');
+1. 我们需要针对不同的屏编写大量的媒体查询
+2. 如果动态改变尺寸，不会实时的进行更新
+
+### 3.1.2用js动态获取设备宽度
+ 如果希望实时改变屏幕尺寸时，font-size也可以实时更改，可以通过js代码:
+ 方法:
+
+1. 根据html的宽度计算出font-size的大小，并且设置到html上
+2. 监听页面的实时改变，并且重新设置font-size的大小到html上
+```js
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+        // 1.获取html的元素
+        const htmlEl = document.documentElement
+ 
+        function setRemUnit() {
+            // 2.获取html的宽度(视口的宽度)
+            const htmlWidth = htmlEl.clientWidth
+            // 3.根据宽度计算一个html的font-size的大小
+            const htmlFontSize = htmlWidth / 10
+            // 4.将font-size设置到html上
+            htmlEl.style.fontSize = htmlFontSize + "px"
+        }
+        // 保证第一次进来时, 可以设置一次font-size
+        setRemUnit()
+ 
+        // 当屏幕尺寸发生变化时, 实时来修改html的font-size
+        window.addEventListener("resize", setRemUnit)
+        //跳转的页面计算一下
+        window.addEventListener("pageshow",function(e) {
+            if(e.persisted) {
+                setRemUnit()
+            }
+         })
+    </script>
+    <style>
+ 
+        .box {
+            width: 5rem;
+            height: 5rem;
+            background: #8ec04c;
+        }
+        p{
+            font-size: 0.5rem;
+        }
+    </style>
+ 
+ 
+    <div class="box">
+        <p></p>
+    </div>
+```
+默认font-size:16px,所以一开始不用设置。
+  
+### 3.1.3 利用第三方库lib-flexible动态font-size
+下载地址：<a href='https://github.com/amfe/lib-flexible'>GitHub - amfe/lib-flexible: 可伸缩布局方案</a>
+
+核心代码和上面写js是差不多的，主要他处理一些别的情况，比如屏幕是否支持0.5px,还有页面跳转问题。
+```js
+<script src="./js/lib_flexible.js"></script>
+ 
+  <style>
+    .box {
+      width: 5rem;
+      height: 5rem;
+      background-color: orange;
     }
-  }
-  ```
-- 使用SVG格式的图片，它是矢量图形，可以在任何分辨率下保持清晰。
-- 使用`<picture>`元素或`srcset`
+ 
+    p {
+      font-size: 0.5rem;
+    }
+  </style>
+ 
+ 
+  
+  <div class="box">
+      <p>我是文本</p>
+  </div>
+```
+
+### 3.1.4 rem单位-px转成rem的方案
+上面我们已经解决了动态生成font-size了，但是我们要把px转成rem。
+[![odOGao.png](https://vip.helloimg.com/images/2023/11/10/odOGao.png)](https://www.helloimg.com/image/odOGao)
+ 375px的屏幕font-size就是37.5，100px宽的盒子就是100除以37.5。每一次都要运算。这就很麻烦。
+
+### 3.1.5第一种：手动用计算器算。（不推荐）
+比如有一个在375px屏幕上，100px宽度和高度的盒子
+我们需要将100px转成对应的rem值:
+100/37.5=2.6667，其他也是相同的方法计算即可
+
+### 3.1.6 第三种:postcss-pxtorem 
+目前在前端的工程化开发中，我们可以借助于webpack的工具来完成自动的转化;
+
+例如，设计稿375的那就在375上布局写px，之前怎么布局现在就怎么布局。后面打包就会自动修改。
+
+下载插件：`npm i postcss-pxtorem -D`
+  
+插件官网:https://github.com/cuth/postcss-pxtorem
+  
+在根目录下新建一个postcss.config.js文件，下面提供了一份基本的 PostCSS 示例配置，可以在此配置的基础上根据项目需求进行修改。
+```js
+// postcss.config.js
+module.exports = {
+  plugins: {
+    'postcss-pxtorem': {
+      rootValue: 37.5,
+      propList: ['*'],
+    },
+  },
+};
+```
+其他设计稿的可以修改rootValue的值
+### 3.1.7 第四种:VSCode插件
+px to rem的插件，在编写时自动转化
+[![od9yx1.png](https://vip.helloimg.com/images/2023/11/10/od9yx1.png)](https://www.helloimg.com/image/od9yx1)
+然后直接打100px就可以看得到，然后选rem就可以了。就不用直接算了。
+[![odOBgb.png](https://vip.helloimg.com/images/2023/11/10/odOBgb.png)](https://www.helloimg.com/image/odOBgb)
+
+
+## 4.2 vw单位 (方案二)
+vw单位是相对于视口的。比如375px的屏幕就是1vw==3.752px。
+
+基于375屏幕：
+```js
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+    <style>
+        /* 设置给375px的设计稿 */
+        /* 1vw = 3.75px */
+        .box {
+            /* width: 100px / 3.75px = 26.6667vw */
+            width: 26.6667vw;
+            height: 26.6667vw;
+            background: #8ec04c;
+        }
+ 
+        p {
+            font-size: 3.2vw;
+        }
+    </style>
+ 
+ 
+    <div class="box">
+        <p></p>
+    </div>
+ ```
+效果一样的：可以从计算样式那里看到width和font-size都是动态的。
+
+
+### 4.2.1 vw和rem的对比
+**rem事实上是作为一种过渡的方案，它利用的也是vw的思想**
+- 前面不管是我们自己编写的js，还是flexible的源码
+- 都是将1rem等同于设计稿的1/10，在利用1rem计算相对于整个屏幕的尺寸大小
+- 思考一下，1vw不是刚好等于屏幕的1/100而且相对于rem还更加有优势;
+
+**vw相比于rem的优势:**
+- 优势一: 不用去计算html的font-size大小，也不需要给html设置这样一个font-size
+- 优势二:不会因为设置html的font-size大小，而必须给body再设置一个font-size，防止继承
+- 优势三:因为不依赖font-size的尺寸，所以不用担心某些原因html的font-size尺寸被篡改，页面尺寸混乱
+- 优势四:vw相比于rem更加语义化，1vw刚好是1/100的viewport的大小
+- 优势五: 可以具备rem之前所有的优点
+### 4.2.2 vw的单位换算
+1. 第一种：手动换算
+  
+比如有一个在375px屏幕上，100px宽度和高度的盒子口我们需要将100px转成对应的vw值
+100/3.75=26.667，其他也是相同的方法计算即可
+  
+2. 第二种:less/scss函数
+```js
+@vwUnit:3.75;
+ 
+.pxToVw(@px) {
+  result: 1vw * (@px / @vwUnit);
+}
+ 
+.box {
+  width: .pxToVw(100)[result];
+  height: .pxToVw(100)[result];
+  background-color: orange;
+}
+ 
+p {
+  font-size: .pxToVw(14)[result];
+}
+ ```
+
+3. 第三种: postcss-px-to-viewport
+和rem一样，在前端的工程化开发中，我们可以借助于webpack的工具来完成自动的转化。postcss-px-to-viewport 是一款 PostCSS 插件，用于将 px 单位转化为 vw/vh 单位。
+
+安装插件：`npm i postcss-px-to-viewport -D`
+
+下面提供了一份基本的 PostCSS 示例配置，可以在此配置的基础上根据项目需求进行修改。
+```js
+// postcss.config.js
+module.exports = {
+  plugins: {
+    'postcss-px-to-viewport': {
+      viewportWidth: 375,
+    },
+  },
+};
+viewportWidth的值根据自己的设计稿填写，还有很多配置想看文档配置，比如哪些类不转换vw等等。
+```
+
+4. 第四种:VSCode插件
+ px tovw 的插件，在编写时自动转化
+[![odORHD.md.png](https://vip.helloimg.com/images/2023/11/10/odORHD.md.png)](https://www.helloimg.com/image/odORHD)
+
+ 这样就可以转换了。
