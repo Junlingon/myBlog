@@ -1,7 +1,7 @@
 ---
 title: B站实习年前小结
 description: 常用技能点
-date: 2024-2-16
+date: 2024-02-16
 random: talk 
 tags:
     - 实习
